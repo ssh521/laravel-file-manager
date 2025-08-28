@@ -12,16 +12,17 @@ This is a Laravel package (`ssh521/laravel-file-manager`) that provides a simple
 - **Service Provider**: `src/FileManagerServiceProvider.php` - Handles package registration, route loading, view loading, and asset publishing
 - **Controller**: `src/Http/Controllers/FileManagerController.php` - Main controller handling file operations (index, upload, createFolder, delete)
 - **Configuration**: `config/file-manager.php` - Comprehensive configuration for routes, storage, security, UI, and features
-- **View**: `resources/views/index.blade.php` - Bootstrap 5 interface for file management
+- **View**: `resources/views/index.blade.php` - Tailwind CSS 4.0 interface for file management
 - **Routes**: `routes/web.php` - Package route definitions
 
 ### Key Features
-- Folder creation and navigation with breadcrumb support
-- File upload with drag & drop and MIME type validation
-- Image preview capabilities
-- Security measures including path traversal protection
-- Configurable forbidden file extensions
-- Route middleware support for authentication
+- **Folder Management**: Create, delete, and navigate directories with breadcrumb navigation
+- **File Upload**: Drag & drop interface with multi-file support and MIME type validation
+- **Image Preview**: Real-time preview of image files with responsive sizing
+- **Security**: Path traversal protection, file extension filtering, CSRF protection
+- **Customization**: Configurable routes, storage paths, file restrictions, and UI text
+- **Authentication**: Configurable middleware support for access control
+- **Modern UI**: Tailwind CSS 4.0 interface with responsive design and smooth interactions
 
 ## Development Commands
 
@@ -78,6 +79,41 @@ config/file-manager.php                # Package configuration
 resources/views/index.blade.php        # Main UI view
 routes/web.php                         # Package routes
 ```
+
+## UI Framework
+
+The package uses **Tailwind CSS 4.0** for styling, providing a modern and responsive interface. Key UI components include:
+
+### Styling Architecture
+- **Tailwind CSS 4.0**: Latest version loaded via CDN for quick setup
+- **Font Awesome 6**: Icons for file types, actions, and navigation
+- **Custom CSS**: Minimal custom styles for drag & drop interactions
+- **No Bootstrap dependency**: Completely migrated from Bootstrap 5
+
+### Layout System
+- **Responsive Grid**: Uses Tailwind's `grid` system with `lg:grid-cols-3` layout
+- **Mobile-First**: Stacks components vertically on small screens
+- **Container-Based**: Centered layout with proper spacing
+
+### UI Components
+- **File Table**: Clean table with hover states and proper spacing using `divide-y` utilities
+- **Upload Area**: Drag & drop zone with visual feedback (`dragover` states)
+- **Action Buttons**: Modern button styles with proper focus/hover states
+- **Modal Dialog**: Custom modal using Tailwind utilities (no Bootstrap Modal)
+- **Breadcrumb Navigation**: Clean breadcrumb with proper separators
+
+### Color Scheme
+- **Primary**: Blue (`blue-600`, `blue-700`) for main actions
+- **Success**: Green (`green-600`) for positive actions
+- **Danger**: Red (`red-600`) for destructive actions
+- **Neutral**: Gray palette for backgrounds and secondary elements
+- **Status Colors**: Yellow for folders, green for images, gray for files
+
+### Interactive Elements
+- **Checkboxes**: Styled with `rounded border-gray-300 text-blue-600`
+- **Buttons**: Consistent padding, rounded corners, focus rings
+- **Hover States**: Subtle background changes on interactive elements
+- **Loading States**: Disabled button states with opacity changes
 
 ## Testing
 

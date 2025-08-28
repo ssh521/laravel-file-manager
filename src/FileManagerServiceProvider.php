@@ -20,6 +20,12 @@ class FileManagerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        //php artisan vendor:publish --provider="Ssh521\LaravelFileManager\FileManagerServiceProvider"
+        //php artisan vendor:publish --tag=file-manager-config
+        //php artisan vendor:publish --tag=file-manager-views
+        //php artisan vendor:publish --tag=file-manager-assets
+        
         // Load package routes
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
@@ -37,11 +43,6 @@ class FileManagerServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/file-manager'),
             ], 'file-manager-views');
-
-            // Publish assets (if any)
-            $this->publishes([
-                __DIR__ . '/../resources/assets' => public_path('vendor/file-manager'),
-            ], 'file-manager-assets');
         }
     }
 }
