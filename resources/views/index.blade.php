@@ -26,6 +26,44 @@
             border-color: rgb(59 130 246);
             background-color: rgb(219 234 254);
         }
+        .resizer {
+            width: 4px;
+            background-color: rgb(229 231 235);
+            cursor: col-resize;
+            position: relative;
+            transition: background-color 0.2s;
+        }
+        .resizer:hover {
+            background-color: rgb(59 130 246);
+        }
+        .resizer:active {
+            background-color: rgb(37 99 235);
+        }
+        .main-container {
+            display: flex;
+            min-height: 600px;
+        }
+        .file-panel {
+            flex: 1;
+            min-width: 400px;
+        }
+        .preview-panel {
+            width: 350px;
+            min-width: 250px;
+            max-width: 50%;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .preview-panel {
+                width: 100%;
+                max-width: none;
+            }
+            .resizer {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -66,30 +104,33 @@
                     </ol>
                 </nav>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2">
-                        <!-- Upload Area -->
-                        <div class="upload-area mb-6 rounded-lg p-8 text-center bg-gray-50" id="uploadArea">
-                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                            <p class="mb-4 text-gray-600">파일을 드래그하여 업로드하거나 클릭하여 선택하세요</p>
-                            <input type="file" id="fileInput" multiple class="hidden">
-                            <button class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" onclick="document.getElementById('fileInput').click();">
-                                <i class="fas fa-plus mr-2"></i> 파일 선택
-                            </button>
-                        </div>
+                <div class="main-container bg-white rounded-lg shadow overflow-hidden">
+                    <!-- Left Panel - File Manager -->
+                    <div class="file-panel">
+                        <div class="p-6">
+                            <!-- Upload Area -->
+                            <div class="upload-area mb-6 rounded-lg p-8 text-center bg-gray-50" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                                <p class="mb-4 text-gray-600">파일을 드래그하여 업로드하거나 클릭하여 선택하세요</p>
+                                <input type="file" id="fileInput" multiple class="hidden">
+                                <button class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" onclick="document.getElementById('fileInput').click();">
+                                    <i class="fas fa-plus mr-2"></i> 파일 선택
+                                </button>
+                            </div>
 
-                        <!-- Action Buttons -->
-                        <div class="mb-6 space-x-3">
-                            <button class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-lg font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" onclick="showCreateFolderModal()">
-                                <i class="fas fa-folder-plus mr-2"></i> 폴더 생성
-                            </button>
-                            <button class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-lg font-semibold text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed" onclick="deleteSelected()" id="deleteBtn" disabled>
-                                <i class="fas fa-trash mr-2"></i> 삭제
-                            </button>
+                            <!-- Action Buttons -->
+                            <div class="mb-6 space-x-3">
+                                <button class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-lg font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" onclick="showCreateFolderModal()">
+                                    <i class="fas fa-folder-plus mr-2"></i> 폴더 생성
+                                </button>
+                                <button class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-lg font-semibold text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed" onclick="deleteSelected()" id="deleteBtn" disabled>
+                                    <i class="fas fa-trash mr-2"></i> 삭제
+                                </button>
+                            </div>
                         </div>
 
                         <!-- File List -->
-                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="overflow-hidden">
                             <div class="overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
@@ -163,20 +204,22 @@
                                                 <td colspan="5" class="px-6 py-8 text-center text-gray-500">폴더가 비어있습니다</td>
                                             </tr>
                                         @endforelse
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-1">
-                        <!-- File Preview -->
-                        <div class="bg-white rounded-lg shadow">
-                            <div class="px-6 py-4 border-b border-gray-200">
-                                <h3 class="text-lg font-medium text-gray-900">미리보기</h3>
-                            </div>
-                            <div class="p-6" id="previewArea">
-                                <p class="text-gray-500 text-center">파일을 선택하면 미리보기가 표시됩니다</p>
-                            </div>
+                    <!-- Resizer Bar -->
+                    <div class="resizer" id="resizer"></div>
+
+                    <!-- Right Panel - File Preview -->
+                    <div class="preview-panel bg-gray-50">
+                        <div class="px-6 py-4 border-b border-gray-200 bg-white">
+                            <h3 class="text-lg font-medium text-gray-900">미리보기</h3>
+                        </div>
+                        <div class="p-6" id="previewArea">
+                            <p class="text-gray-500 text-center">파일을 선택하면 미리보기가 표시됩니다</p>
                         </div>
                     </div>
                 </div>
@@ -391,6 +434,52 @@
             `;
             
             previewArea.innerHTML = content;
+        }
+
+        // 크기 조정 기능
+        let isResizing = false;
+        let startX = 0;
+        let startWidth = 0;
+
+        const resizer = document.getElementById('resizer');
+        const filePanel = document.querySelector('.file-panel');
+        const previewPanel = document.querySelector('.preview-panel');
+
+        if (resizer && filePanel && previewPanel) {
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = previewPanel.offsetWidth;
+                
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+                
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                
+                const deltaX = startX - e.clientX;
+                const newWidth = startWidth + deltaX;
+                const containerWidth = document.querySelector('.main-container').offsetWidth;
+                
+                // 최소/최대 너비 제한
+                const minWidth = 250;
+                const maxWidth = containerWidth * 0.5;
+                
+                if (newWidth >= minWidth && newWidth <= maxWidth) {
+                    previewPanel.style.width = newWidth + 'px';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            });
         }
     </script>
 </body>
