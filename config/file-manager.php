@@ -29,12 +29,17 @@ return [
     |--------------------------------------------------------------------------
     |
     | Configure the routing options for the file manager.
+    | 
+    | Middleware options:
+    | - ['web'] - Basic web routes (default)
+    | - ['web', 'auth'] - Requires authentication
+    | - ['web', 'auth', 'admin'] - Requires authentication and admin role
     |
     */
     'route' => [
         'prefix' => 'file-manager',
         'name' => 'file-manager',
-        'middleware' => ['web'],
+        'middleware' => ['web', 'auth'], // Add 'auth' middleware for authentication
     ],
 
     /*
