@@ -2,23 +2,32 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ssh521/laravel-file-manager.svg?style=flat-square)](https://packagist.org/packages/ssh521/laravel-file-manager)
 [![Total Downloads](https://img.shields.io/packagist/dt/ssh521/laravel-file-manager.svg?style=flat-square)](https://packagist.org/packages/ssh521/laravel-file-manager)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/ssh521/laravel-file-manager/run-tests?label=tests&style=flat-square)](https://github.com/ssh521/laravel-file-manager/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/ssh521/laravel-file-manager/fix-php-code-style-issues?label=code%20style&style=flat-square)](https://github.com/ssh521/laravel-file-manager/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 
-A simple and elegant file manager for Laravel applications with drag & drop upload, folder management, and file preview capabilities.
+A modern and elegant file manager for Laravel applications with drag & drop upload, folder management, and image preview capabilities built with **Tailwind CSS 4.0**.
+
+📦 **GitHub Repository**: [https://github.com/ssh521/laravel-file-manager.git](https://github.com/ssh521/laravel-file-manager.git)
 
 ## Features
 
-- 📁 **Folder Management**: Create, delete, and navigate through directories
-- 📤 **File Upload**: Drag & drop or click to upload multiple files
-- 🖼️ **Image Preview**: Built-in preview for image files
-- 🗂️ **File Operations**: Delete files and folders with batch operations
-- 🔒 **Security**: Path traversal protection and configurable restrictions
-- 🎨 **Bootstrap UI**: Clean and responsive interface
-- ⚙️ **Configurable**: Extensive configuration options
+- 📁 **Folder Management**: Create, delete, and navigate through directories with breadcrumb navigation
+- 📤 **File Upload**: Modern drag & drop interface with multi-file support
+- 🖼️ **Image Preview**: Real-time preview for image files with responsive sizing
+- 🗂️ **File Operations**: Batch delete files and folders with selection
+- 🔒 **Security**: Advanced path traversal protection and configurable file restrictions
+- 🎨 **Modern UI**: Built with **Tailwind CSS 4.0** for a clean, responsive interface
+- 🔐 **Authentication**: Configurable middleware support (web, auth, admin)
+- ⚙️ **Highly Configurable**: Extensive configuration options for all aspects
 - 🌐 **Localization Ready**: Easy to customize text and labels
+- 📱 **Mobile Responsive**: Works perfectly on all device sizes
+- ✨ **No Dependencies**: Self-contained with CDN assets (Tailwind CSS 4.0 + Font Awesome 6)
 
 ## Screenshots
 
-![File Manager Interface](screenshot.png)
+![Laravel File Manager Interface](Screenshot.png)
+
+*Modern Tailwind CSS 4.0 interface with drag & drop functionality, breadcrumb navigation, and real-time image previews.*
 
 ## Installation
 
@@ -28,18 +37,28 @@ You can install the package via composer:
 composer require ssh521/laravel-file-manager
 ```
 
-The package will automatically register itself.
+The package will automatically register itself using Laravel's package auto-discovery.
 
-### Publish Configuration (Optional)
+### Publish Assets (Optional)
+
+Publish the configuration file:
 
 ```bash
 php artisan vendor:publish --tag=file-manager-config
 ```
 
-### Publish Views (Optional)
+Publish views for customization:
 
 ```bash
 php artisan vendor:publish --tag=file-manager-views
+```
+
+### Storage Setup
+
+Make sure your storage is properly linked:
+
+```bash
+php artisan storage:link
 ```
 
 ## Usage
@@ -70,20 +89,34 @@ return [
     'route' => [
         'prefix' => 'file-manager',
         'name' => 'file-manager',
-        'middleware' => ['web'],
+        'middleware' => ['web', 'auth'], // Add authentication
     ],
 
     // UI configuration
     'title' => 'File Manager',
-    'back_route' => 'admin.dashboard', // Optional back button
-    'back_text' => 'Back to Dashboard',
+    'root_name' => 'Storage',
+    'back_route' => null, // Optional back button route
+    'back_text' => '돌아가기',
 
-    // File upload limits
-    'max_file_size' => 10240, // KB
-    'allowed_mimes' => [], // Empty = allow all
+    // File upload configuration
+    'max_file_size' => 10240, // KB (10MB)
+    'allowed_mimes' => [], // Empty = allow all file types
 
-    // Security
-    'forbidden_extensions' => ['php', 'js', 'html'],
+    // Image file extensions for preview
+    'image_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'],
+
+    // Security settings
+    'forbidden_extensions' => ['php', 'js', 'html', 'htm'],
+    'folder_name_pattern' => '/^[a-zA-Z0-9\-_\s]+$/',
+
+    // Feature toggles
+    'features' => [
+        'upload' => true,
+        'create_folder' => true,
+        'delete' => true,
+        'rename' => false, // Not implemented yet
+        'move' => false,   // Not implemented yet
+    ],
 ];
 ```
 
@@ -109,11 +142,15 @@ Set the back route in your config:
 
 #### Middleware Protection
 
-Add authentication middleware:
+Configure authentication and authorization:
 
 ```php
 'route' => [
-    'middleware' => ['web', 'auth', 'admin'],
+    'middleware' => ['web'], // Basic web routes
+    // or
+    'middleware' => ['web', 'auth'], // Requires authentication
+    // or  
+    'middleware' => ['web', 'auth', 'admin'], // Requires authentication + admin role
 ],
 ```
 
@@ -187,7 +224,7 @@ Views will be published to `resources/views/vendor/file-manager/`
 
 ### Custom Styling
 
-The package uses Bootstrap 5 and Font Awesome icons. You can override styles by publishing the views and adding custom CSS.
+The package uses **Tailwind CSS 4.0** and **Font Awesome 6** icons loaded via CDN. You can override styles by publishing the views and adding custom CSS, or by customizing the Tailwind classes directly.
 
 ### Extending the Controller
 
@@ -214,7 +251,8 @@ class CustomFileManagerController extends BaseController
 
 - PHP ^8.2
 - Laravel ^11.0|^12.0
-- Bootstrap 5 (included via CDN)
+- Modern browser with JavaScript enabled
+- Tailwind CSS 4.0 (included via CDN)
 - Font Awesome 6 (included via CDN)
 
 ## Contributing
@@ -223,7 +261,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security
 
-If you discover any security related issues, please email security@example.com instead of using the issue tracker.
+If you discover any security related issues, please email ssh521@naver.com instead of using the issue tracker.
 
 ## Credits
 
@@ -236,7 +274,12 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## Changelog
 
 ### v1.0.0
-- Initial release
-- Basic file management functionality
-- Bootstrap 5 interface
-- Configurable options
+- 🎉 Initial release
+- 📁 Complete file management functionality (upload, create folders, delete)
+- 🎨 Modern **Tailwind CSS 4.0** interface
+- 🖼️ Image preview with responsive sizing
+- 🔒 Advanced security features (path traversal protection, file validation)
+- 🔐 Configurable authentication middleware
+- ⚙️ Comprehensive configuration options
+- 📱 Mobile-responsive design
+- ✨ Self-contained with CDN assets (no external dependencies)
