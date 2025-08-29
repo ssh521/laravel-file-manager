@@ -7,7 +7,9 @@
         "file-upload",
         "storage",
         "admin",
-        "files"
+        "files",
+        "blog",
+        "cms"
     ],
     "type": "library",
     "license": "MIT",
