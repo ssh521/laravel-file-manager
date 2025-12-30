@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../laravel-file-manager-app"
+		}
+	],
+	"settings": {}
+}
